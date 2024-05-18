@@ -12,5 +12,8 @@ namespace Nowadays.Business.Interfaces
     {
         Task<ResponseDto<List<GetCompanyDto>>> GetCompanyAsync();
         Task<ResponseDto<NoDataDto>> AddCompanyAsync(AddCompanyDto company);
+        Task<ResponseDto<NoDataDto>> UpdateCompanyAsync(UpdateCompanyDto company);
+        Task<ResponseDto<NoDataDto>> DeleteCompanyAsync(string companyId);
+
     }
 }

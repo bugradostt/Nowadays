@@ -32,5 +32,23 @@ namespace Nowadays.Api.Controllers
             return ActionResultInstance(result);
 
         }
+
+        [Route("update-company")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateCompany(UpdateCompanyDto company)
+        {
+            var result = await _companyService.UpdateCompanyAsync(company);
+            return ActionResultInstance(result);
+
+        }
+
+        [Route("delete-company")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCompany(DeleteCompanyDto company)
+        {
+            var result = await _companyService.DeleteCompanyAsync(company.Id);
+            return ActionResultInstance(result);
+
+        }
     }
 }

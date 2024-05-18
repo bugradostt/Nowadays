@@ -30,7 +30,8 @@ namespace Nowadays.DataAccess.Implementations
             try
             {
                 // Aynı isme sahip başka bir veri var mı kontrolü
-                bool isCompany = await _context.Companies.AnyAsync(x=>x.Name  == StringExtensions.Encrypt(company.Name));
+                bool isCompany = await _context.Companies
+                .AnyAsync(x=>x.Name  == StringExtensions.Encrypt(company.Name) && x.Invalidated ==1);
                 if (isCompany)
                 {
                     return ResponseDto<NoDataDto>.Fail("There is already a company with this name!", 400, true);
@@ -51,15 +52,42 @@ namespace Nowadays.DataAccess.Implementations
             }
         }
 
+        public async Task<ResponseDto<NoDataDto>> DeleteCompanyAsync(string companyId)
+        {
+            try
+            {
+                if (companyId == null)
+                {
+                    return ResponseDto<NoDataDto>.Fail("Company id cannot be empty!",400,true);
+                }
+
+                var foundCompany = await _context.Companies
+                .Where(x=>x.Id == companyId)
+                .FirstOrDefaultAsync();
+
+                foundCompany.Invalidated = 0;
+                _context.Update(foundCompany);
+                await _context.SaveChangesAsync();
+
+                return ResponseDto<NoDataDto>.Success(200);
+                
+            }
+            catch (Exception ex )
+            {
+                return ResponseDto<NoDataDto>.Fail(ex.Message,500,true);
+            }
+        }
+
         public async Task<ResponseDto<List<GetCompanyDto>>> GetCompanyAsync()
         {
 
             try
             {
 
-                var companyList = await _context.Companies.ToListAsync();
+                var companyList = await _context.Companies
+                .Where(x=>x.Invalidated == 1)
+                .ToListAsync();
 
-               
                 var mapperCompanyList = _mapper.Map<List<GetCompanyDto>>(companyList);
 
 
@@ -77,6 +105,43 @@ namespace Nowadays.DataAccess.Implementations
             {
                 return ResponseDto<List<GetCompanyDto>>.Fail(ex.Message, 500, true);
             }
+        }
+
+        public async Task<ResponseDto<NoDataDto>> UpdateCompanyAsync(UpdateCompanyDto company)
+        {
+            try
+            {
+                // Aynı isme sahip başka bir veri var mı kontrolü
+                bool isCompany = await _context.Companies
+                .AnyAsync(x=>x.Name  == StringExtensions.Encrypt(company.Name) && x.Invalidated ==1);
+                if (isCompany)
+                {
+                    return ResponseDto<NoDataDto>.Fail("There is already a company with this name!", 400, true);
+                }
+
+                var foundCompany = await _context.Companies
+                .Where(x=>x.Id == company.Id)
+                .FirstOrDefaultAsync();
+
+                if (foundCompany == null)
+                {
+                    return ResponseDto<NoDataDto>.Fail("Record not found.", 404, true);
+                }
+
+                foundCompany.UpdatedAt = DateTime.Now;
+                foundCompany.Name = StringExtensions.Encrypt(company.Name);
+
+
+                _context.Companies.Update(foundCompany);
+                await _context.SaveChangesAsync();
+
+                return ResponseDto<NoDataDto>.Success(200);
+            }
+            catch (Exception ex)
+            {
+                return ResponseDto<NoDataDto>.Fail(ex.Message,500,true); 
+            }
+       
         }
     }
 }

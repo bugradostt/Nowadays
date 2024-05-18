@@ -43,6 +43,30 @@ namespace Nowadays.Business.Implementations
             }
         }
 
+        public async Task<ResponseDto<NoDataDto>> DeleteCompanyAsync(string companyId)
+        {
+            try
+            {
+                var response = await _companyRepository.DeleteCompanyAsync(companyId);
+
+                if (!response.IsSuccessful)
+                {
+                    // Birden fazla hata mesajını birleştirerek tek bir hata mesajı dizesine dönüştürün
+                    string errorMessage = response.errors != null && response.errors.Errors.Count > 0
+                        ? string.Join(Environment.NewLine, response.errors.Errors)
+                        : "An error occurred";
+
+                    return ResponseDto<NoDataDto>.Fail(errorMessage, 400, true);
+                }
+
+                return ResponseDto<NoDataDto>.Success(200);
+            }
+            catch (Exception ex)
+            {
+                return ResponseDto<NoDataDto>.Fail(ex.Message, 500, true);
+            }
+        }
+
         public async Task<ResponseDto<List<GetCompanyDto>>> GetCompanyAsync()
         {
             try
@@ -64,6 +88,30 @@ namespace Nowadays.Business.Implementations
             catch (Exception ex)
             {
                 return ResponseDto<List<GetCompanyDto>>.Fail(ex.Message, 500, true);
+            }
+        }
+
+        public async Task<ResponseDto<NoDataDto>> UpdateCompanyAsync(UpdateCompanyDto company)
+        {
+            try
+            {
+                var response = await _companyRepository.UpdateCompanyAsync(company);
+
+                if (!response.IsSuccessful)
+                {
+                    // Birden fazla hata mesajını birleştirerek tek bir hata mesajı dizesine dönüştürün
+                    string errorMessage = response.errors != null && response.errors.Errors.Count > 0
+                        ? string.Join(Environment.NewLine, response.errors.Errors)
+                        : "An error occurred";
+
+                    return ResponseDto<NoDataDto>.Fail(errorMessage, 400, true);
+                }
+
+                return ResponseDto<NoDataDto>.Success(200);
+            }
+            catch (Exception ex)
+            {
+                return ResponseDto<NoDataDto>.Fail(ex.Message, 500, true);
             }
         }
     }
