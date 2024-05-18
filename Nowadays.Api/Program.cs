@@ -1,11 +1,35 @@
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Nowadays.Business.Implementations;
+using Nowadays.Business.Interfaces;
+using Nowadays.DataAccess.Contexts;
+using Nowadays.DataAccess.Dtos.Mapper;
+using Nowadays.DataAccess.Implementations;
+using Nowadays.DataAccess.Interfaces;
+
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
+    builder.Configuration.GetConnectionString("DefaultConnection")
+));
+
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<MapperDto>();
+});
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 
 var app = builder.Build();
 

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Nowadays.DataAccess.Dtos.Company;
+using Nowadays.DataAccess.Dtos.Response;
 
 namespace Nowadays.DataAccess.Interfaces
 {
     public interface ICompanyRepository
     {
+        Task<ResponseDto<List<GetCompanyDto>>> GetCompanyAsync();
+        Task<ResponseDto<NoDataDto>> AddCompanyAsync(AddCompanyDto company);
+
     }
 }
