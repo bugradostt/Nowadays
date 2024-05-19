@@ -62,7 +62,7 @@ namespace Nowadays.DataAccess.Implementations
                 }
 
                 var foundCompany = await _context.Companies
-                .Where(x=>x.Id == companyId)
+                .Where(x=>x.CompanyId == companyId)
                 .FirstOrDefaultAsync();
 
                 foundCompany.Invalidated = 0;
@@ -120,7 +120,7 @@ namespace Nowadays.DataAccess.Implementations
                 }
 
                 var foundCompany = await _context.Companies
-                .Where(x=>x.Id == company.Id)
+                .Where(x=>x.CompanyId == company.CompanyId)
                 .FirstOrDefaultAsync();
 
                 if (foundCompany == null)

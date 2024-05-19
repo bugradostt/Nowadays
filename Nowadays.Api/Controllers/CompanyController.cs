@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Nowadays.Business.Interfaces;
 using Nowadays.DataAccess.Dtos.Company;
+using Nowadays.DataAccess.Dtos.Partner;
 
 namespace Nowadays.Api.Controllers
 {
@@ -44,9 +45,9 @@ namespace Nowadays.Api.Controllers
 
         [Route("delete-company")]
         [HttpDelete]
-        public async Task<IActionResult> DeleteCompany(DeleteCompanyDto company)
+        public async Task<IActionResult> DeleteCompany(RequestCompanyIdDto request)
         {
-            var result = await _companyService.DeleteCompanyAsync(company.Id);
+            var result = await _companyService.DeleteCompanyAsync(request.CompanyId);
             return ActionResultInstance(result);
 
         }

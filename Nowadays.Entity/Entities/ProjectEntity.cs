@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Nowadays.Entity.Entities
 {
-    public class CompanyEntity
+    public class ProjectEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(TypeName = "nvarchar(450)")]
-        public string CompanyId { get; set; } = Guid.NewGuid().ToString();
+        public string ProjectId { get; set; } = Guid.NewGuid().ToString();
+        public string CompanyId { get; set; }
+        [ForeignKey("CompanyId")]
+        public virtual CompanyEntity Company { get; set; }        
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
