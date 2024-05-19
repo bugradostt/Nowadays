@@ -4,17 +4,16 @@ using Nowadays.DataAccess.Interfaces;
 
 namespace Nowadays.DataAccess.Implementations
 {
-    public class EmployeeRepository : IEmployeeRepository
+    public class IssueRepository : IIssueRepository
     {
         readonly IMapper _mapper;
         readonly AppDbContext _context;
-        public EmployeeRepository(AppDbContext context, IMapper mapper)
+        public IssueRepository(AppDbContext context, IMapper mapper)
         {
 
             _context = context;
             _mapper = mapper;
         }
-
 
     }
 }
