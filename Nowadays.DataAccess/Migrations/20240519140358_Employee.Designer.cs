@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nowadays.DataAccess.Contexts;
 
@@ -11,9 +12,11 @@ using Nowadays.DataAccess.Contexts;
 namespace Nowadays.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240519140358_Employee")]
+    partial class Employee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,31 +87,6 @@ namespace Nowadays.DataAccess.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("Nowadays.Entity.Entities.EmployeeProjectEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProjectId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("EmployeeProjects");
-                });
-
             modelBuilder.Entity("Nowadays.Entity.Entities.IssueEntity", b =>
                 {
                     b.Property<string>("IssueId")
@@ -163,25 +141,6 @@ namespace Nowadays.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("Nowadays.Entity.Entities.EmployeeProjectEntity", b =>
-                {
-                    b.HasOne("Nowadays.Entity.Entities.EmployeeEntity", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Nowadays.Entity.Entities.ProjectEntity", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Nowadays.Entity.Entities.ProjectEntity", b =>

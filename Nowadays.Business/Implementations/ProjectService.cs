@@ -79,7 +79,7 @@ namespace Nowadays.Business.Implementations
                     return ResponseDto<List<GetProjectDto>>.Fail(errorMessage, 400, true);
                 }
 
-                return ResponseDto<List<GetProjectDto>>.Success(200);
+                return ResponseDto<List<GetProjectDto>>.Success(response.Data,200);
             }
             catch (Exception ex)
             {

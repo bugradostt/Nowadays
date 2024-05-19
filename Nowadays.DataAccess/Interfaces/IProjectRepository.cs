@@ -9,5 +9,6 @@ namespace Nowadays.DataAccess.Interfaces
         Task<ResponseDto<NoDataDto>> AddProjectAsync(AddProjectDto project);
         Task<ResponseDto<NoDataDto>> UpdateProjectAsync(UpdateProjectDto project);
         Task<ResponseDto<NoDataDto>> DeleteProjectAsync(string projectId);
+        Task<ResponseDto<NoDataDto>> AssignmentEmployeesToProjectAsync(AssignmentEmployeesToProjectDto assignmentEmployeesToProject);
     }
 }

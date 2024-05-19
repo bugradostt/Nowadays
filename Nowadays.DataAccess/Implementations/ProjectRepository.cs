@@ -27,7 +27,7 @@ namespace Nowadays.DataAccess.Implementations
                 // Şirket kontrolü
                 bool isCompany = await _context.Companies
                 .AnyAsync(x=>x.CompanyId ==project.CompanyId);
-                if (isCompany)
+                if (!isCompany)
                 {
                     return ResponseDto<NoDataDto>.Fail("No such company found!", 400, true);
                 }
@@ -55,6 +55,12 @@ namespace Nowadays.DataAccess.Implementations
                 return ResponseDto<NoDataDto>.Fail(ex.Message, 500, true);
             }
         }
+
+        public Task<ResponseDto<NoDataDto>> AssignmentEmployeesToProjectAsync(AssignmentEmployeesToProjectDto assignmentEmployeesToProject)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public async Task<ResponseDto<NoDataDto>> DeleteProjectAsync(string projectId)
         {
@@ -117,7 +123,7 @@ namespace Nowadays.DataAccess.Implementations
                 // Şirket kontrolü
                 bool isCompany = await _context.Companies
                 .AnyAsync(x=>x.CompanyId ==project.CompanyId);
-                if (isCompany)
+                if (!isCompany)
                 {
                     return ResponseDto<NoDataDto>.Fail("No such company found!", 400, true);
                 }

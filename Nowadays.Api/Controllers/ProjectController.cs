@@ -18,7 +18,7 @@ namespace Nowadays.Api.Controllers
         }
 
         [Route("get-project")]
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> GetProject(RequestCompanyIdDto request)
         {
             var result = await _projectService.GetProjectAsync(request.CompanyId);
@@ -44,7 +44,7 @@ namespace Nowadays.Api.Controllers
         }
 
         [Route("update-project")]
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> UpdateProject(UpdateProjectDto project)
         {
             var result = await _projectService.UpdateProjectAsync(project);

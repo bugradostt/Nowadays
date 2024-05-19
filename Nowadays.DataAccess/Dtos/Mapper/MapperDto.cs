@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Nowadays.DataAccess.Dtos.Company;
+using Nowadays.DataAccess.Dtos.Employee;
+using Nowadays.DataAccess.Dtos.Project;
 using Nowadays.Entity.Entities;
 using System;
 using System.Collections.Generic;
@@ -15,6 +17,12 @@ namespace Nowadays.DataAccess.Dtos.Mapper
         {
             CreateMap<GetCompanyDto, CompanyEntity>().ReverseMap();
             CreateMap<AddCompanyDto, CompanyEntity>().ReverseMap();
+
+            CreateMap<GetProjectDto, ProjectEntity>().ReverseMap();
+            CreateMap<AddProjectDto, ProjectEntity>().ReverseMap();
+
+            CreateMap<GetEmployeeDto, EmployeeEntity>().ReverseMap();
+            CreateMap<AddEmployeeDto, EmployeeEntity>().ReverseMap();
         }
     }
 }
