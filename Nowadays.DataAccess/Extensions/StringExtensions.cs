@@ -9,27 +9,6 @@ namespace Nowadays.DataAccess.Extensions
 {
     public static class StringExtensions
     {
-        public static string CalcSHA256(this string subject)
-        {
-            const string SHA256Key = "TESTNowadaysTEST";
-            var withdirty = SHA256Key + subject;
-
-            // Use input string to calculate SHA256 hash
-            using (System.Security.Cryptography.SHA256 sha256Hash = System.Security.Cryptography.SHA256.Create())
-            {
-                byte[] inputBytes = Encoding.ASCII.GetBytes(withdirty);
-                byte[] hashBytes = sha256Hash.ComputeHash(inputBytes);
-
-                // Convert the byte array to hexadecimal string
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < hashBytes.Length; i++)
-                {
-                    sb.Append(hashBytes[i].ToString("X2"));
-                }
-                return sb.ToString().ToUpper();
-            }
-        }
-
         public static string Encrypt(string plainText)
         {
 
