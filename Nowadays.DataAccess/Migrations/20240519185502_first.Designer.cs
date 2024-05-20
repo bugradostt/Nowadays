@@ -12,8 +12,8 @@ using Nowadays.DataAccess.Contexts;
 namespace Nowadays.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240519140358_Employee")]
-    partial class Employee
+    [Migration("20240519185502_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -93,11 +93,30 @@ namespace Nowadays.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Name")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Detail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Invalidated")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProjectId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("IssueId");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Issues");
                 });
@@ -141,6 +160,17 @@ namespace Nowadays.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("Nowadays.Entity.Entities.IssueEntity", b =>
+                {
+                    b.HasOne("Nowadays.Entity.Entities.ProjectEntity", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Nowadays.Entity.Entities.ProjectEntity", b =>

@@ -1,4 +1,4 @@
-namespace Nowadays.DataAccess.Dtos.Project
+namespace Nowadays.DataAccess.Dtos.Partner
 {
     public class RequestProjectIdDto
     {

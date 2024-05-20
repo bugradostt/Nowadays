@@ -84,42 +84,36 @@ namespace Nowadays.DataAccess.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("Nowadays.Entity.Entities.EmployeeProjectEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProjectId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("EmployeeProjects");
-                });
-
             modelBuilder.Entity("Nowadays.Entity.Entities.IssueEntity", b =>
                 {
                     b.Property<string>("IssueId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Name")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Detail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Invalidated")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProjectId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("IssueId");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Issues");
                 });
@@ -165,21 +159,13 @@ namespace Nowadays.DataAccess.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("Nowadays.Entity.Entities.EmployeeProjectEntity", b =>
+            modelBuilder.Entity("Nowadays.Entity.Entities.IssueEntity", b =>
                 {
-                    b.HasOne("Nowadays.Entity.Entities.EmployeeEntity", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Nowadays.Entity.Entities.ProjectEntity", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Employee");
 
                     b.Navigation("Project");
                 });
