@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Nowadays.DataAccess.Dtos.Company;
 using Nowadays.DataAccess.Dtos.Employee;
+using Nowadays.DataAccess.Dtos.Issue;
 using Nowadays.DataAccess.Dtos.Project;
 using Nowadays.Entity.Entities;
 using System;
@@ -23,6 +24,9 @@ namespace Nowadays.DataAccess.Dtos.Mapper
 
             CreateMap<GetEmployeeDto, EmployeeEntity>().ReverseMap();
             CreateMap<AddEmployeeDto, EmployeeEntity>().ReverseMap();
+
+            CreateMap<GetIssueDto, IssueEntity>().ReverseMap();
+            CreateMap<AddIssueDto, IssueEntity>().ReverseMap();
         }
     }
 }
