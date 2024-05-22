@@ -38,6 +38,31 @@ namespace Nowadays.Business.Implementations
             }
         }
 
+        public async Task<ResponseDto<NoDataDto>> AssignmentEmployeesToIssueAsync(AssignmentEmployeesToIssueDto assignmentEmployeesToIssue)
+        {
+            try
+            {
+                var response = await _ıssueRepository.AssignmentEmployeesToIssueAsync(assignmentEmployeesToIssue);
+
+                if (!response.IsSuccessful)
+                {
+                    // Birden fazla hata mesajını birleştirerek tek bir hata mesajı dizesine dönüştürün
+                    string errorMessage = response.errors != null && response.errors.Errors.Count > 0
+                        ? string.Join(Environment.NewLine, response.errors.Errors)
+                        : "An error occurred";
+
+                    return ResponseDto<NoDataDto>.Fail(errorMessage, 400, true);
+                }
+
+                return ResponseDto<NoDataDto>.Success(200);
+            }
+            catch (Exception ex)
+            {
+                return ResponseDto<NoDataDto>.Fail(ex.Message, 500, true);
+            }
+        }
+
+
         public async Task<ResponseDto<NoDataDto>> DeleteIssueAsync(string issueId)
         {
             try

@@ -49,6 +49,45 @@ namespace Nowadays.DataAccess.Implementations
             }
         }
 
+        
+        public async Task<ResponseDto<NoDataDto>> AssignmentEmployeesToIssueAsync(AssignmentEmployeesToIssueDto assignmentEmployeesToIssue)
+        {
+
+            try
+            {
+                 // Görec kontrolü
+                bool isIssue = await _context.Issues
+                .AnyAsync(x=>x.IssueId ==assignmentEmployeesToIssue.IssueId);
+                if (!isIssue)
+                {
+                    return ResponseDto<NoDataDto>.Fail("No such issue found!", 400, true);
+                }
+
+                 // Çalışan kontrolü
+                bool isEmployee = await _context.Employees
+                .AnyAsync(x=>x.EmployeeId ==assignmentEmployeesToIssue.EmployeeId);
+                if (!isEmployee)
+                {
+                    return ResponseDto<NoDataDto>.Fail("No such employee found!", 400, true);
+                }
+
+                // Çalışan Projede mi
+                //Yapılacak
+
+
+                var assignmentMapper = _mapper.Map<EmployeeIssueEntity>(assignmentEmployeesToIssue);
+                _context.EmployeeIssues.Add(assignmentMapper);
+                await _context.SaveChangesAsync();
+                return ResponseDto<NoDataDto>.Success(200);
+
+            }
+            catch (Exception ex)
+            {
+                return ResponseDto<NoDataDto>.Fail(ex.Message, 500, true);
+            }
+        }
+
+
         public async Task<ResponseDto<NoDataDto>> DeleteIssueAsync(string issueId)
         {
             try

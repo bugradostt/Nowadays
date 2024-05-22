@@ -9,5 +9,7 @@ namespace Nowadays.DataAccess.Interfaces
         Task<ResponseDto<NoDataDto>> AddIssueAsync(AddIssueDto issue);
         Task<ResponseDto<NoDataDto>> UpdateIssueAsync(UpdateIssueDto issue);
         Task<ResponseDto<NoDataDto>> DeleteIssueAsync(string issueId);
+        Task<ResponseDto<NoDataDto>> AssignmentEmployeesToIssueAsync(AssignmentEmployeesToIssueDto assignmentEmployeesToIssue);
+
     }
 }
