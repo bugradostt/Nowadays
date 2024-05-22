@@ -45,5 +45,14 @@ namespace Nowadays.Api.Controllers
             return ActionResultInstance(result);
         }
 
+        [Route("update-employee")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateEmployee(UpdateEmployeeDto employee)
+        {
+            var result = await _employeeService.UpdateEmployeeAsync(employee);
+            return ActionResultInstance(result);
+
+        }
+
     }
 }

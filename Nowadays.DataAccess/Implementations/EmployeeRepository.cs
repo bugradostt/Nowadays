@@ -121,9 +121,48 @@ namespace Nowadays.DataAccess.Implementations
             }
         }
 
-        public Task<ResponseDto<NoDataDto>> UpdateEmployeeAsync(UpdateEmployeeDto employee)
+        public async Task<ResponseDto<NoDataDto>> UpdateEmployeeAsync(UpdateEmployeeDto employee)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // TC kimlik numarası kontrolü
+                if (string.IsNullOrEmpty(employee.TcIdentityNumber) || 
+                employee.TcIdentityNumber.Length != 11 || 
+                !employee.TcIdentityNumber.All(char.IsDigit))
+                {
+                    return ResponseDto<NoDataDto>.Fail("Tc Identity Number must be 11 characters and consist of numbers only!", 400, true);
+                }
+
+                // Aynı isme sahip başka bir veri var mı kontrolü
+                bool isEmployee = await _context.Employees
+                .AnyAsync(x=>x.TcIdentityNumber  == StringExtensions.Encrypt(employee.TcIdentityNumber) && x.Invalidated ==1 && x.CompanyId ==employee.CompanyId);
+                if (isEmployee)
+                {
+                    return ResponseDto<NoDataDto>.Fail("There is already a employee with this name!", 400, true);
+                }
+
+                var foundEmployee = await _context.Employees
+                .Where(x=>x.EmployeeId == employee.EmployeeId)
+                .FirstOrDefaultAsync();
+
+                if (foundEmployee == null)
+                {
+                    return ResponseDto<NoDataDto>.Fail("Record not found.", 404, true);
+                }
+
+                foundEmployee.UpdatedAt = DateTime.Now;
+                foundEmployee.Name = StringExtensions.Encrypt(employee.Name);
+                foundEmployee.Surname = StringExtensions.Encrypt(employee.Surname);
+                foundEmployee.TcIdentityNumber = StringExtensions.Encrypt(employee.TcIdentityNumber);
+                _context.Employees.Update(foundEmployee);
+                await _context.SaveChangesAsync();
+
+                return ResponseDto<NoDataDto>.Success(200);
+            }
+            catch (Exception ex)
+            {
+                return ResponseDto<NoDataDto>.Fail(ex.Message,500,true); 
+            }
         }
 
     }

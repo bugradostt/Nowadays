@@ -86,9 +86,28 @@ namespace Nowadays.Business.Implementations
             }
         }
 
-        public Task<ResponseDto<NoDataDto>> UpdateEmployeeAsync(UpdateEmployeeDto employee)
+        public async Task<ResponseDto<NoDataDto>> UpdateEmployeeAsync(UpdateEmployeeDto employee)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var response = await _employeeRepository.UpdateEmployeeAsync(employee);
+
+                if (!response.IsSuccessful)
+                {
+                    // Birden fazla hata mesajını birleştirerek tek bir hata mesajı dizesine dönüştürün
+                    string errorMessage = response.errors != null && response.errors.Errors.Count > 0
+                        ? string.Join(Environment.NewLine, response.errors.Errors)
+                        : "An error occurred";
+
+                    return ResponseDto<NoDataDto>.Fail(errorMessage, 400, true);
+                }
+
+                return ResponseDto<NoDataDto>.Success(200);
+            }
+            catch (Exception ex)
+            {
+                return ResponseDto<NoDataDto>.Fail(ex.Message, 500, true);
+            }
         }
     }
 }
