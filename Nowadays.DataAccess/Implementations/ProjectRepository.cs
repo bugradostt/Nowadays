@@ -56,9 +56,38 @@ namespace Nowadays.DataAccess.Implementations
             }
         }
 
-        public Task<ResponseDto<NoDataDto>> AssignmentEmployeesToProjectAsync(AssignmentEmployeesToProjectDto assignmentEmployeesToProject)
+        public async Task<ResponseDto<NoDataDto>> AssignmentEmployeesToProjectAsync(AssignmentEmployeesToProjectDto assignmentEmployeesToProject)
         {
-            throw new NotImplementedException();
+
+            try
+            {
+                 // Proje kontrolü
+                bool isProject = await _context.Projects
+                .AnyAsync(x=>x.ProjectId ==assignmentEmployeesToProject.ProjectId);
+                if (!isProject)
+                {
+                    return ResponseDto<NoDataDto>.Fail("No such project found!", 400, true);
+                }
+
+                 // Çalışan kontrolü
+                bool isEmployee = await _context.Employees
+                .AnyAsync(x=>x.EmployeeId ==assignmentEmployeesToProject.EmployeeId);
+                if (!isEmployee)
+                {
+                    return ResponseDto<NoDataDto>.Fail("No such employee found!", 400, true);
+                }
+
+
+                var assignmentMapper = _mapper.Map<EmployeeProjectEntity>(assignmentEmployeesToProject);
+                _context.EmployeeProjects.Add(assignmentMapper);
+                await _context.SaveChangesAsync();
+                return ResponseDto<NoDataDto>.Success(200);
+
+            }
+            catch (Exception ex)
+            {
+                return ResponseDto<NoDataDto>.Fail(ex.Message, 500, true);
+            }
         }
 
 

@@ -12,7 +12,7 @@ using Nowadays.DataAccess.Contexts;
 namespace Nowadays.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240519185502_first")]
+    [Migration("20240521202223_first")]
     partial class first
     {
         /// <inheritdoc />
@@ -85,6 +85,27 @@ namespace Nowadays.DataAccess.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("Nowadays.Entity.Entities.EmployeeProjectEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmployeeProjects");
                 });
 
             modelBuilder.Entity("Nowadays.Entity.Entities.IssueEntity", b =>

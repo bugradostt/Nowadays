@@ -51,5 +51,14 @@ namespace Nowadays.Api.Controllers
             return ActionResultInstance(result);
 
         }
+
+        [Route("assignment-employees-to-project")]
+        [HttpPost]
+        public async Task<IActionResult> AssignmentEmployeesToProject( AssignmentEmployeesToProjectDto assignmentEmployeesToProject)
+        {
+            var result = await _projectService.AssignmentEmployeesToProjectAsync(assignmentEmployeesToProject);
+            return ActionResultInstance(result);
+
+        }
     }
 }
