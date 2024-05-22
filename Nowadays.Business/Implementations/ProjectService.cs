@@ -62,6 +62,29 @@ namespace Nowadays.Business.Implementations
                 return ResponseDto<NoDataDto>.Fail(ex.Message, 500, true);
             }
         }
+        public async Task<ResponseDto<NoDataDto>> AssignmentIssueToProjectAsync(AssignmentIssueToProjectDto assignmentIssueToProject)
+        {
+            try
+            {
+                var response = await _projectRepository.AssignmentIssueToProjectAsync(assignmentIssueToProject);
+
+                if (!response.IsSuccessful)
+                {
+                    // Birden fazla hata mesajını birleştirerek tek bir hata mesajı dizesine dönüştürün
+                    string errorMessage = response.errors != null && response.errors.Errors.Count > 0
+                        ? string.Join(Environment.NewLine, response.errors.Errors)
+                        : "An error occurred";
+
+                    return ResponseDto<NoDataDto>.Fail(errorMessage, 400, true);
+                }
+
+                return ResponseDto<NoDataDto>.Success(200);
+            }
+            catch (Exception ex)
+            {
+                return ResponseDto<NoDataDto>.Fail(ex.Message, 500, true);
+            }
+        }
 
 
         public async Task<ResponseDto<NoDataDto>> DeleteProjectAsync(string projectId)

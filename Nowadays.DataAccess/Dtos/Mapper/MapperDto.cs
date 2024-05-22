@@ -29,6 +29,7 @@ namespace Nowadays.DataAccess.Dtos.Mapper
             CreateMap<AddIssueDto, IssueEntity>().ReverseMap();
 
             CreateMap<AssignmentEmployeesToProjectDto , EmployeeProjectEntity>().ReverseMap();
+            CreateMap<AssignmentIssueToProjectDto , IssueProjectEntity>().ReverseMap();
         }
     }
 }

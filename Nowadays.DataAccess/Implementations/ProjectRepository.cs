@@ -91,6 +91,41 @@ namespace Nowadays.DataAccess.Implementations
         }
 
 
+    public async Task<ResponseDto<NoDataDto>> AssignmentIssueToProjectAsync(AssignmentIssueToProjectDto assignmentIssueToProject)
+        {
+
+            try
+            {
+                 // Proje kontrolü
+                bool isProject = await _context.Projects
+                .AnyAsync(x=>x.ProjectId ==assignmentIssueToProject.ProjectId);
+                if (!isProject)
+                {
+                    return ResponseDto<NoDataDto>.Fail("No such project found!", 400, true);
+                }
+
+                 // Görev kontrolü
+                bool isIssue = await _context.Issues
+                .AnyAsync(x=>x.IssueId ==assignmentIssueToProject.IssueId);
+                if (!isIssue)
+                {
+                    return ResponseDto<NoDataDto>.Fail("No such issue found!", 400, true);
+                }
+
+
+                var assignmentMapper = _mapper.Map<IssueProjectEntity>(assignmentIssueToProject);
+                _context.IssueProjects.Add(assignmentMapper);
+                await _context.SaveChangesAsync();
+                return ResponseDto<NoDataDto>.Success(200);
+
+            }
+            catch (Exception ex)
+            {
+                return ResponseDto<NoDataDto>.Fail(ex.Message, 500, true);
+            }
+        }
+
+
         public async Task<ResponseDto<NoDataDto>> DeleteProjectAsync(string projectId)
         {
             try

@@ -60,5 +60,14 @@ namespace Nowadays.Api.Controllers
             return ActionResultInstance(result);
 
         }
+
+        [Route("assignment-issue-to-project")]
+        [HttpPost]
+        public async Task<IActionResult> AssignmentIssueToProject( AssignmentIssueToProjectDto assignmentIssueToProject)
+        {
+            var result = await _projectService.AssignmentIssueToProjectAsync(assignmentIssueToProject);
+            return ActionResultInstance(result);
+
+        }
     }
 }

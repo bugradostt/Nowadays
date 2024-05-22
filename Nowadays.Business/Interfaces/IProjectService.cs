@@ -10,6 +10,7 @@ namespace Nowadays.Business.Interfaces
         Task<ResponseDto<NoDataDto>> UpdateProjectAsync(UpdateProjectDto project);
         Task<ResponseDto<NoDataDto>> DeleteProjectAsync(string projectId);
         Task<ResponseDto<NoDataDto>> AssignmentEmployeesToProjectAsync(AssignmentEmployeesToProjectDto assignmentEmployeesToProject);
+        Task<ResponseDto<NoDataDto>> AssignmentIssueToProjectAsync(AssignmentIssueToProjectDto assignmentIssueToProject);
 
     }
 }

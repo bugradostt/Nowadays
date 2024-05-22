@@ -19,6 +19,7 @@ namespace Nowadays.DataAccess.Contexts
         public DbSet<EmployeeProjectEntity> EmployeeProjects { get; set; }
         public DbSet<EmployeeEntity> Employees { get; set; }
         public DbSet<IssueEntity> Issues { get; set; }
+        public DbSet<IssueProjectEntity> IssueProjects { get; set; }
 
         
 
