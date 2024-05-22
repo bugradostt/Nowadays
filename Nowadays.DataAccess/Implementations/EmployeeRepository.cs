@@ -135,7 +135,7 @@ namespace Nowadays.DataAccess.Implementations
 
                 // Aynı isme sahip başka bir veri var mı kontrolü
                 bool isEmployee = await _context.Employees
-                .AnyAsync(x=>x.TcIdentityNumber  == StringExtensions.Encrypt(employee.TcIdentityNumber) && x.Invalidated ==1 && x.CompanyId ==employee.CompanyId);
+                .AnyAsync(x=>x.TcIdentityNumber  == StringExtensions.Encrypt(employee.TcIdentityNumber) && x.Invalidated ==1);
                 if (isEmployee)
                 {
                     return ResponseDto<NoDataDto>.Fail("There is already a employee with this name!", 400, true);
