@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Nowadays.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class First : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,6 +27,20 @@ namespace Nowadays.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EmployeeIssues",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmployeeId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IssueId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeIssues", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EmployeeProjects",
                 columns: table => new
                 {
@@ -41,6 +55,20 @@ namespace Nowadays.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "IssueProjects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IssueId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProjectId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IssueProjects", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Employees",
                 columns: table => new
                 {
@@ -49,6 +77,7 @@ namespace Nowadays.DataAccess.Migrations
                     TcIdentityNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BirthYear = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Invalidated = table.Column<int>(type: "int", nullable: false)
@@ -129,10 +158,16 @@ namespace Nowadays.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "EmployeeIssues");
+
+            migrationBuilder.DropTable(
                 name: "EmployeeProjects");
 
             migrationBuilder.DropTable(
                 name: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "IssueProjects");
 
             migrationBuilder.DropTable(
                 name: "Issues");

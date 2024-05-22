@@ -12,8 +12,8 @@ using Nowadays.DataAccess.Contexts;
 namespace Nowadays.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240522024842_assignment_issue")]
-    partial class assignment_issue
+    [Migration("20240522044025_First")]
+    partial class First
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,6 +55,9 @@ namespace Nowadays.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("BirthYear")
+                        .HasColumnType("int");
+
                     b.Property<string>("CompanyId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -85,6 +88,27 @@ namespace Nowadays.DataAccess.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("Nowadays.Entity.Entities.EmployeeIssueEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IssueId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmployeeIssues");
                 });
 
             modelBuilder.Entity("Nowadays.Entity.Entities.EmployeeProjectEntity", b =>

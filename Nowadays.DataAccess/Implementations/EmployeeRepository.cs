@@ -7,6 +7,8 @@ using Nowadays.DataAccess.Extensions;
 using Nowadays.DataAccess.Interfaces;
 using Nowadays.Entity.Entities;
 
+
+
 namespace Nowadays.DataAccess.Implementations
 {
     public class EmployeeRepository : IEmployeeRepository
@@ -47,7 +49,7 @@ namespace Nowadays.DataAccess.Implementations
                 if (isEmployee)
                 {
                     return ResponseDto<NoDataDto>.Fail("There is already a employee with this name!", 400, true);
-                }
+                } 
 
                 var employeeMapper = _mapper.Map<EmployeeEntity>(employee);
                 employeeMapper.CreatedAt = DateTime.Now;
@@ -154,6 +156,7 @@ namespace Nowadays.DataAccess.Implementations
                 foundEmployee.Name = StringExtensions.Encrypt(employee.Name);
                 foundEmployee.Surname = StringExtensions.Encrypt(employee.Surname);
                 foundEmployee.TcIdentityNumber = StringExtensions.Encrypt(employee.TcIdentityNumber);
+                foundEmployee.BirthYear = employee.BirthYear;
                 _context.Employees.Update(foundEmployee);
                 await _context.SaveChangesAsync();
 

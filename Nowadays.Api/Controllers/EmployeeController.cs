@@ -1,8 +1,11 @@
+using Azure;
+using KPSPublic;
 using Microsoft.AspNetCore.Mvc;
 using Nowadays.Business.Implementations;
 using Nowadays.Business.Interfaces;
 using Nowadays.DataAccess.Dtos.Employee;
 using Nowadays.DataAccess.Dtos.Partner;
+using Nowadays.DataAccess.Dtos.Response;
 
 
 namespace Nowadays.Api.Controllers
@@ -32,6 +35,23 @@ namespace Nowadays.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEmployee(AddEmployeeDto employee)
         {
+
+            if (string.IsNullOrEmpty(employee.TcIdentityNumber) ||
+                employee.TcIdentityNumber.Length != 11 ||
+                !employee.TcIdentityNumber.All(char.IsDigit))
+            {
+                return BadRequest("Tc Identity Number must be 11 characters and consist of numbers only!");
+            }
+
+            var client = new KPSPublic.KPSPublicSoapClient(KPSPublicSoapClient.EndpointConfiguration.KPSPublicSoap);
+            var responseMernis = await client.TCKimlikNoDogrulaAsync(Convert.ToInt64(employee.TcIdentityNumber), employee.Name, employee.Surname,employee.BirthYear);
+            var resultMernis = responseMernis.Body.TCKimlikNoDogrulaResult;
+
+            if (resultMernis == false)
+            {
+                return BadRequest("Information could not be verified...");
+            }
+
             var result = await _employeeService.AddEmployeeAsync(employee);
             return ActionResultInstance(result);
 
@@ -49,6 +69,23 @@ namespace Nowadays.Api.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateEmployee(UpdateEmployeeDto employee)
         {
+
+            if (string.IsNullOrEmpty(employee.TcIdentityNumber) ||
+               employee.TcIdentityNumber.Length != 11 ||
+               !employee.TcIdentityNumber.All(char.IsDigit))
+            {
+                return BadRequest("Tc Identity Number must be 11 characters and consist of numbers only!");
+            }
+
+            var client = new KPSPublic.KPSPublicSoapClient(KPSPublicSoapClient.EndpointConfiguration.KPSPublicSoap);
+            var responseMernis = await client.TCKimlikNoDogrulaAsync(Convert.ToInt64(employee.TcIdentityNumber), employee.Name, employee.Surname, employee.BirthYear);
+            var resultMernis = responseMernis.Body.TCKimlikNoDogrulaResult;
+
+            if (resultMernis == false)
+            {
+                return BadRequest("Information could not be verified...");
+            }
+
             var result = await _employeeService.UpdateEmployeeAsync(employee);
             return ActionResultInstance(result);
 
