@@ -36,12 +36,7 @@ namespace Nowadays.Api.Controllers
         public async Task<IActionResult> AddEmployee(AddEmployeeDto employee)
         {
 
-            /* 
-                Not : 
-                Normalde Kimlik kontrolünü burda yapmamam gerekiyordu
-                Servis kısmında KPSPublic.KPSPublicSoapClient değerine bir türlü 
-                ulaşamadım vakit kaybetmek istemediğim için burda yapmak zorunda kaldım
-            */
+            
             if (string.IsNullOrEmpty(employee.TcIdentityNumber) ||
                 employee.TcIdentityNumber.Length != 11 ||
                 !employee.TcIdentityNumber.All(char.IsDigit))
@@ -58,7 +53,7 @@ namespace Nowadays.Api.Controllers
                 return BadRequest("Information could not be verified...");
             }
 
-            // Not 
+        
 
             var result = await _employeeService.AddEmployeeAsync(employee);
             return ActionResultInstance(result);
@@ -79,12 +74,7 @@ namespace Nowadays.Api.Controllers
         {
 
 
-            /* 
-                Not : 
-                Normalde Kimlik kontrolünü burda yapmamam gerekiyordu
-                Servis kısmında KPSPublic.KPSPublicSoapClient değerine bir türlü 
-                ulaşamadım vakit kaybetmek istemediğim için burda yapmak zorunda kaldım
-            */
+          
 
             if (string.IsNullOrEmpty(employee.TcIdentityNumber) ||
                employee.TcIdentityNumber.Length != 11 ||
@@ -102,7 +92,7 @@ namespace Nowadays.Api.Controllers
                 return BadRequest("Information could not be verified...");
             }
 
-            // Not
+          
 
             var result = await _employeeService.UpdateEmployeeAsync(employee);
             return ActionResultInstance(result);
